@@ -22,22 +22,33 @@ public class PlayerMovement : MonoBehaviour
        moveVelocity = moveInput.normalized * speed;
     }
 
+    public int orientation = 1;
     private void FixedUpdate()
     {
+       
+       //Horizontal Movement
        if(Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
         {
             rb.velocity = new Vector2(-speed, rb.velocity.y);
+            orientation = -1;
         }
         else
         {
             if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
             {
                 rb.velocity = new Vector2(+speed, rb.velocity.y);
+                orientation = 1;
             }
             else
             {
                 rb.velocity = new Vector2(0f, rb.velocity.y);
             }
+        }
+
+        //Dash
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            rb.velocity = new Vector2(27*orientation, 0);
         }
     }
 }
