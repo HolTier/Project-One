@@ -5,6 +5,9 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     public float speed;
+    public float dashSpeed;
+   
+    //private int orientation = 1;
 
     private Rigidbody2D rb;
     private Vector2 moveVelocity;
@@ -19,10 +22,10 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         Vector2 moveInput = new Vector2(Input.GetAxis("Horizontal"), 0);
-       moveVelocity = moveInput.normalized * speed;
+        
     }
 
-    public int orientation = 1;
+    
     private void FixedUpdate()
     {
        
@@ -30,25 +33,47 @@ public class PlayerMovement : MonoBehaviour
        if(Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
         {
             rb.velocity = new Vector2(-speed, rb.velocity.y);
-            orientation = -1;
+            Dash(1);
         }
-        else
+       else
         {
             if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
             {
                 rb.velocity = new Vector2(+speed, rb.velocity.y);
-                orientation = 1;
+
+                if (Input.GetKeyDown(KeyCode.LeftShift))
+                    Dash(2);
             }
             else
-            {
+           {
                 rb.velocity = new Vector2(0f, rb.velocity.y);
             }
         }
 
         //Dash
+        
+    }
+
+    private void Dash(int orientation)
+    {
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
-            rb.velocity = new Vector2(27*orientation, 0);
+           
+           
+
+                if(orientation == 1)
+                {
+                    rb.velocity = Vector2.left * dashSpeed;
+                }
+                else if (orientation == 2)
+                {
+                    rb.velocity = Vector2.right * dashSpeed;
+                }
+
+            }
         }
-    }
-}
+
+
+        
+ }
+
